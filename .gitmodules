@@ -1,0 +1,6 @@
+[submodule "Archive/V1"]
+	path = Archive/V1
+	url = https://github.com/MisaghM/Software-Testing-Course-Projects.git
+[submodule "Archive/V2"]
+	path = Archive/V2
+	url = https://github.com/Hadi-loo/Software-Testing-Course.git
