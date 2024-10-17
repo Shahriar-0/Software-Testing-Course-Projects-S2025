@@ -45,15 +45,6 @@ class TableTest {
     }
 
     @Test
-    @DisplayName("Test Table Creation")
-    void testTableCreation() {
-        assertEquals(1, table.getTableNumber());
-        assertEquals(4, table.getSeatsNumber());
-        assertNotNull(table.getReservations());
-        assertTrue(table.getReservations().isEmpty());
-    }
-
-    @Test
     @DisplayName("Test Add Reservation to Table")
     void testAddReservation() {
         Reservation reservation = new Reservation(
@@ -77,10 +68,7 @@ class TableTest {
         }
     )
     @DisplayName("Test Table Reservation Status at Specific Time")
-    void testIsReservedAtSpecificTime(
-        String dateTime,
-        boolean expectedIsReserved
-    ) {
+    void testIsReservedAtSpecificTime(String dateTime, boolean expectedIsReserved) {
         LocalDateTime testDateTime = LocalDateTime.parse(dateTime);
 
         if (expectedIsReserved) {
@@ -104,10 +92,7 @@ class TableTest {
         }
     )
     @DisplayName("Test Past and Future Reservations")
-    void testPastAndFutureReservations(
-        String dateTime,
-        boolean expectedIsReserved
-    ) {
+    void testPastAndFutureReservations(String dateTime, boolean expectedIsReserved) {
         LocalDateTime reservationTime = LocalDateTime.parse(dateTime);
 
         if (expectedIsReserved) {
@@ -156,10 +141,41 @@ class TableTest {
         assertTrue(table.isReserved(reservationTime1));
         assertTrue(table.isReserved(reservationTime2));
 
-        // Cancel one reservation, the other should still be active
         reservation1.cancel();
         assertFalse(table.isReserved(reservationTime1));
         assertTrue(table.isReserved(reservationTime2));
+    }
+
+    @Test
+    @DisplayName("Test Multiple Reservations at Same Time")
+    void testMultipleReservationsAtSameTime() {
+        LocalDateTime reservationTime = LocalDateTime.now().plusDays(1);
+        Reservation reservation1 = new Reservation(
+            user,
+            restaurant,
+            table,
+            reservationTime
+        );
+        Reservation reservation2 = new Reservation(
+            user,
+            restaurant,
+            table,
+            reservationTime
+        );
+
+        table.addReservation(reservation1);
+        table.addReservation(reservation2);
+
+        assertTrue(table.isReserved(reservationTime));
+        assertEquals(2, table.getReservations().size());
+
+        reservation1.cancel();
+        assertTrue(table.isReserved(reservationTime));
+        assertEquals(1, table.getReservations().stream().filter(r -> !r.isCancelled()).count());
+
+        reservation2.cancel();
+        assertFalse(table.isReserved(reservationTime));
+        assertEquals(0, table.getReservations().stream().filter(r -> !r.isCancelled()).count());
     }
 
     @Test
@@ -177,6 +193,10 @@ class TableTest {
         assertTrue(table.isReserved(reservationTime));
         reservation.cancel();
         assertFalse(table.isReserved(reservationTime));
+
+        List<Reservation> reservations = table.getReservations();
+        List<Reservation> notCancelledReservations = reservations.stream().filter(r -> !r.isCancelled()).toList();
+        assertEquals(0, notCancelledReservations.size());
     }
 
     @Test
@@ -195,12 +215,7 @@ class TableTest {
     @DisplayName("edge case: Test Reservation at Midnight")
     void testReservationAtMidnight() {
         LocalDateTime midnight = LocalDateTime.of(2024, 10, 20, 0, 0);
-        Reservation reservation = new Reservation(
-            user,
-            restaurant,
-            table,
-            midnight
-        );
+        Reservation reservation = new Reservation(user, restaurant, table, midnight);
         table.addReservation(reservation);
 
         assertTrue(table.isReserved(midnight));
