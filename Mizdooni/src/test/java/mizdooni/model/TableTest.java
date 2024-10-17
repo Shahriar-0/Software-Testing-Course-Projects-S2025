@@ -211,7 +211,7 @@ class TableTest {
     }
 
     @Test
-    @DisplayName("edge case: Test Reservation at Midnight")
+    @DisplayName("Edge Case: Test Reservation at Midnight")
     void testReservationAtMidnight() {
         LocalDateTime midnight = LocalDateTime.of(2024, 10, 20, 0, 0);
         Reservation reservation = new Reservation(user, restaurant, table, midnight);
