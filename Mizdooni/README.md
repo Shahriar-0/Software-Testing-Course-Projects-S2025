@@ -3,7 +3,6 @@
 - [Sample API Requests](#sample-api-requests)
   - [Authentication](#authentication)
     - [Sign Up](#sign-up)
-    - [Login](#login)
     - [Logout](#logout)
     - [User](#user)
     - [Validate Email](#validate-email)
@@ -52,6 +51,23 @@ curl --location 'http://localhost:8080/api/signup' \
 '
 ```
 
+For Windows PowerShell
+
+```powershell
+curl --location "http://localhost:8080/api/signup" `
+--header "Content-Type: application/json" `
+--data-raw '{
+    "username": "swt",
+    "password": "fall03",
+    "email": "swt@gmail.com",
+    "address": {
+        "country": "Iran",
+        "city": "Tehran"
+    },
+    "role": "client"
+}'
+
+
 ### Login
 
 ```bash
@@ -62,6 +78,17 @@ curl --location 'http://localhost:8080/api/login' \
     "password": "asdf"
 }
 '
+```
+
+For Windows PowerShell
+
+```powershell
+curl --location "http://localhost:8080/api/login" `
+--header "Content-Type: application/json" `
+--data '{
+    "username": "Peyman",
+    "password": "asdf"
+}'
 ```
 
 ### Logout
@@ -151,6 +178,26 @@ curl --location 'http://localhost:8080/api/restaurants' \
 '
 ```
 
+For Windows PowerShell
+
+```powershell
+curl --location "http://localhost:8080/api/restaurants" `
+--header "Content-Type: application/json" `
+--data '{
+    "name": "The Best Foods",
+    "type": "Sea Food",
+    "description": "Lorem ipsum dolor",
+    "startTime": "09:00",
+    "endTime": "22:00",
+    "image": null,
+    "address": {
+        "country": "Iran",
+        "city": "Tehran",
+        "street": "Bahar"
+    }
+}'
+```
+
 ## Review
 
 ### Reviews
@@ -161,7 +208,7 @@ curl --location 'http://localhost:8080/api/reviews/1?page=1'
 
 ### Add Review
 
-Clients can add reviews only after they have made a reservation and the time of the reservation has passed. 
+Clients can add reviews only after they have made a reservation and the time of the reservation has passed.
 
 ```bash
 curl --location 'http://localhost:8080/api/reviews/0' \
@@ -176,6 +223,22 @@ curl --location 'http://localhost:8080/api/reviews/0' \
     }
 }
 '
+```
+
+For Windows PowerShell
+
+```powershell
+curl --location "http://localhost:8080/api/reviews/0" `
+--header "Content-Type: application/json" `
+--data '{
+    "comment": "Yet another test comment.",
+    "rating": {
+        "food": 4.4,
+        "service": 3.2,
+        "ambiance": 3.8,
+        "overall": 4.2
+    }
+}'
 ```
 
 ## Table
@@ -197,6 +260,16 @@ curl --location 'http://localhost:8080/api/tables/1' \
     "seatsNumber": 2
 }
 '
+```
+
+For Windows PowerShell
+
+```powershell
+curl --location "http://localhost:8080/api/tables/1" `
+--header "Content-Type: application/json" `
+--data '{
+    "seatsNumber": 2
+}'
 ```
 
 ## Reservation
@@ -233,6 +306,17 @@ curl --location 'http://localhost:8080/api/reserves/1' \
     "datetime": "2024-11-04 13:00"
 }
 '
+```
+
+For Windows PowerShell
+
+```powershell
+curl --location "http://localhost:8080/api/reserves/1" `
+--header "Content-Type: application/json" `
+--data '{
+    "people": 4,
+    "datetime": "2024-11-04 13:00"
+}'
 ```
 
 ### Cancel
