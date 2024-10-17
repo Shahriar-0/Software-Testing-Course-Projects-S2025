@@ -3,6 +3,7 @@
 - [Sample API Requests](#sample-api-requests)
   - [Authentication](#authentication)
     - [Sign Up](#sign-up)
+    - [Login](#login)
     - [Logout](#logout)
     - [User](#user)
     - [Validate Email](#validate-email)
@@ -66,6 +67,7 @@ curl --location "http://localhost:8080/api/signup" `
     },
     "role": "client"
 }'
+```
 
 
 ### Login
