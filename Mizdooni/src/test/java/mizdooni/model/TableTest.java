@@ -201,7 +201,6 @@ class TableTest {
 
     @Test
     @DisplayName("Test Null Date Handling in isReserved")
-    @Disabled("Not handled yet")
     void testIsReservedWithNullDate() {
         assertThrows(
             NullPointerException.class,

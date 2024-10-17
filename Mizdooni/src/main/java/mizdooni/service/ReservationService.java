@@ -161,9 +161,15 @@ public class ReservationService {
     }
 
     private Table findAvailableTable(Restaurant restaurant, int people, LocalDateTime datetime) {
-        return restaurant.getTables().stream()
+        Table availableTable;
+        try {
+            availableTable = restaurant.getTables().stream()
                 .filter(table -> table.getSeatsNumber() >= people && !table.isReserved(datetime))
                 .min(Comparator.comparingInt(Table::getSeatsNumber))
                 .orElse(null);
+        } catch (NullPointerException e) {
+            return null;
+        }
+        return availableTable;
     }
 }

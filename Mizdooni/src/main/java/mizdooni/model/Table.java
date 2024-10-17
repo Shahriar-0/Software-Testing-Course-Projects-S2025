@@ -21,7 +21,10 @@ public class Table {
         reservations.add(reservation);
     }
 
-    public boolean isReserved(LocalDateTime datetime) {
+    public boolean isReserved(LocalDateTime datetime) throws NullPointerException {
+        if (datetime == null) {
+            throw new NullPointerException();
+        }
         return reservations.stream().anyMatch(r -> r.getDateTime().equals(datetime) && !r.isCancelled());
     }
 
