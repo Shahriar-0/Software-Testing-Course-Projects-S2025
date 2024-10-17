@@ -9,13 +9,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class UserTest {
 
     private User user;
     private Address address;
+
+    @Mock
     private Restaurant restaurant;
+
+    @Mock
     private Reservation reservation1;
+
+    @Mock
     private Reservation reservation2;
 
     @BeforeEach
@@ -29,10 +37,7 @@ class UserTest {
                 address,
                 User.Role.client
             );
-
-        restaurant = mock(Restaurant.class);
-        reservation1 = mock(Reservation.class);
-        reservation2 = mock(Reservation.class);
+        MockitoAnnotations.openMocks(this);
     }
 
     @ParameterizedTest

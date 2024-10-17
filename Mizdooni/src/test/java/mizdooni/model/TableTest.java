@@ -12,20 +12,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class TableTest {
 
     private Table table;
+
+    @Mock
     private Restaurant restaurant;
+
+    @Mock
     private Reservation reservation1;
+
+    @Mock
     private Reservation reservation2;
 
     @BeforeEach
     void setUp() {
-        restaurant = mock(Restaurant.class);
-        reservation1 = mock(Reservation.class);
-        reservation2 = mock(Reservation.class);
         table = new Table(1, 123, 4);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
