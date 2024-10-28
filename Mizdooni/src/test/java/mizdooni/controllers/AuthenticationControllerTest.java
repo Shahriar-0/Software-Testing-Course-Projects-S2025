@@ -1,5 +1,13 @@
 package mizdooni.controllers;
 
+import static mizdooni.controllers.ControllerUtils.PARAMS_BAD_TYPE;
+import static mizdooni.controllers.ControllerUtils.PARAMS_MISSING;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import mizdooni.model.Address;
 import mizdooni.model.User;
 import mizdooni.response.Response;
@@ -14,18 +22,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoRule;
 import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.http.HttpStatus;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
-import static mizdooni.controllers.ControllerUtils.PARAMS_BAD_TYPE;
-import static mizdooni.controllers.ControllerUtils.PARAMS_MISSING;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class AuthenticationControllerTest {
 
@@ -43,7 +42,14 @@ public class AuthenticationControllerTest {
     @Before
     public void setUp() {
         Address address = new Address("Country", "City", null);
-        mockUser = new User("testUser", "testPass", "test@example.com", address, User.Role.client);
+        mockUser =
+            new User(
+                "testUser",
+                "testPass",
+                "test@example.com",
+                address,
+                User.Role.client
+            );
     }
 
     // Helper method to access private fields
@@ -72,7 +78,10 @@ public class AuthenticationControllerTest {
     public void testUserNotLoggedIn() {
         when(userService.getCurrentUser()).thenReturn(null);
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.user());
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.user()
+        );
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
         assertEquals("no user logged in", exception.getMessage());
     }
@@ -105,7 +114,10 @@ public class AuthenticationControllerTest {
         params.put("username", "testUser");
         params.put("password", "wrongPass");
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.login(params));
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.login(params)
+        );
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
         assertEquals("invalid username or password", exception.getMessage());
     }
@@ -141,7 +153,10 @@ public class AuthenticationControllerTest {
         Map<String, Object> params = new HashMap<>();
         params.put("username", "newUser");
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.signup(params));
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.signup(params)
+        );
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(PARAMS_MISSING, exception.getMessage());
     }
@@ -160,7 +175,10 @@ public class AuthenticationControllerTest {
         address.put("city", "City");
         params.put("address", address);
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.signup(params));
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.signup(params)
+        );
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(PARAMS_BAD_TYPE, exception.getMessage());
     }
@@ -183,7 +201,10 @@ public class AuthenticationControllerTest {
     public void testLogoutNoUser() {
         doReturn(false).when(userService).logout();
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.logout());
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.logout()
+        );
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
         assertEquals("no user logged in", exception.getMessage());
     }
@@ -206,7 +227,10 @@ public class AuthenticationControllerTest {
     public void testValidateUsernameExists() {
         when(userService.usernameExists("existingUser")).thenReturn(true);
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.validateUsername("existingUser"));
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.validateUsername("existingUser")
+        );
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
         assertEquals("username already exists", exception.getMessage());
     }
@@ -229,7 +253,10 @@ public class AuthenticationControllerTest {
     public void testValidateEmailExists() {
         when(userService.emailExists("registered@example.com")).thenReturn(true);
 
-        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.validateEmail("registered@example.com"));
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.validateEmail("registered@example.com")
+        );
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
         assertEquals("email already registered", exception.getMessage());
     }
