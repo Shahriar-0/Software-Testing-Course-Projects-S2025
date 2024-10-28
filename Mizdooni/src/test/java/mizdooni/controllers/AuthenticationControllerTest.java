@@ -191,7 +191,6 @@ public class AuthenticationControllerTest {
     @Test
     @DisplayName("Test Validate Username Success")
     public void testValidateUsernameAvailable() throws Exception {
-        doReturn(true).when(userService).usernameExists("newUser");
         when(userService.usernameExists("newUser")).thenReturn(false);
 
         Response response = authenticationController.validateUsername("newUser");
@@ -230,7 +229,6 @@ public class AuthenticationControllerTest {
     @Test
     @DisplayName("Test Validate Email Exists")
     public void testValidateEmailExists() {
-        doReturn(true).when(userService).emailExists("registered@example.com");
         when(userService.emailExists("registered@example.com")).thenReturn(true);
 
         ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.validateEmail("registered@example.com"));
