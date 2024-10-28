@@ -12,24 +12,20 @@ import mizdooni.model.Address;
 import mizdooni.model.User;
 import mizdooni.response.Response;
 import mizdooni.response.ResponseException;
-import mizdooni.service.ServiceUtils;
 import mizdooni.service.UserService;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
+@ExtendWith(MockitoExtension.class)
 public class AuthenticationControllerTest {
-
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private UserService userService;
@@ -235,6 +231,18 @@ public class AuthenticationControllerTest {
         assertEquals("username already exists", exception.getMessage());
     }
 
+    @ParameterizedTest
+    @CsvSource({"#username", "username123!", "user@name123!", "use12rname3@!#"})
+    @DisplayName("Test Invalid Username Format")
+    public void testInvalidUsernameFormat(String username) {
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.validateUsername(username)
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("invalid username format", exception.getMessage());
+    }
+
     @Test
     @DisplayName("Test Validate Email Success")
     public void testValidateEmailAvailable() throws Exception {
@@ -259,5 +267,17 @@ public class AuthenticationControllerTest {
         );
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
         assertEquals("email already registered", exception.getMessage());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"#email", "email@example", "email@.com", "email@.com."})
+    @DisplayName("Test Invalid Email Format")
+    public void testInvalidEmailFormat(String email) {
+        ResponseException exception = assertThrows(
+            ResponseException.class,
+            () -> authenticationController.validateEmail(email)
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("invalid email format", exception.getMessage());
     }
 }
