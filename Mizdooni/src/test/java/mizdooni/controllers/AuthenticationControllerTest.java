@@ -19,12 +19,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AuthenticationControllerTest {
 
     @Mock
@@ -232,7 +235,7 @@ public class AuthenticationControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"#username", "username123!", "user@name123!", "use12rname3@!#"})
+    @CsvSource({ "#username", "username123!", "user@name123!", "use12rname3@!#" })
     @DisplayName("Test Invalid Username Format")
     public void testInvalidUsernameFormat(String username) {
         ResponseException exception = assertThrows(
@@ -270,7 +273,7 @@ public class AuthenticationControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"#email", "email@example", "email@.com", "email@.com."})
+    @CsvSource({ "#email", "email@example", "email@.com", "email@.com." })
     @DisplayName("Test Invalid Email Format")
     public void testInvalidEmailFormat(String email) {
         ResponseException exception = assertThrows(
