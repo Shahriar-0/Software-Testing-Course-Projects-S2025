@@ -204,7 +204,6 @@ public class AuthenticationControllerTest {
     @Test
     @DisplayName("Test Validate Username Exists")
     public void testValidateUsernameExists() {
-        when(ServiceUtils.validateUsername("existingUser")).thenReturn(true);
         when(userService.usernameExists("existingUser")).thenReturn(true);
 
         ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.validateUsername("existingUser"));
@@ -215,7 +214,6 @@ public class AuthenticationControllerTest {
     @Test
     @DisplayName("Test Validate Email Success")
     public void testValidateEmailAvailable() throws Exception {
-        when(ServiceUtils.validateEmail("email@example.com")).thenReturn(true);
         when(userService.emailExists("email@example.com")).thenReturn(false);
 
         Response response = authenticationController.validateEmail("email@example.com");
