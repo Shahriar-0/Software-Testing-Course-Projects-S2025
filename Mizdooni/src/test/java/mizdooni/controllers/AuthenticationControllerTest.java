@@ -51,13 +51,6 @@ public class AuthenticationControllerTest {
             );
     }
 
-    // Helper method to access private fields
-    private Object getField(Object obj, String fieldName) throws Exception {
-        Field field = obj.getClass().getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return field.get(obj);
-    }
-
     @Test
     @DisplayName("Test User")
     public void testUserLoggedIn() throws Exception {
@@ -66,10 +59,10 @@ public class AuthenticationControllerTest {
         Response response = authenticationController.user();
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, getField(response, "status"));
-        assertTrue((Boolean) getField(response, "success"));
-        assertEquals("current user", getField(response, "message"));
-        assertEquals(mockUser, getField(response, "data"));
+        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
+        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
+        assertEquals("current user", ControllersTestUtils.getField(response, "message"));
+        assertEquals(mockUser, ControllersTestUtils.getField(response, "data"));
     }
 
     @Test
@@ -98,10 +91,10 @@ public class AuthenticationControllerTest {
         Response response = authenticationController.login(params);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, getField(response, "status"));
-        assertTrue((Boolean) getField(response, "success"));
-        assertEquals("login successful", getField(response, "message"));
-        assertEquals(mockUser, getField(response, "data"));
+        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
+        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
+        assertEquals("login successful", ControllersTestUtils.getField(response, "message"));
+        assertEquals(mockUser, ControllersTestUtils.getField(response, "data"));
     }
 
     @Test
@@ -140,10 +133,10 @@ public class AuthenticationControllerTest {
         Response response = authenticationController.signup(params);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, getField(response, "status"));
-        assertTrue((Boolean) getField(response, "success"));
-        assertEquals("signup successful", getField(response, "message"));
-        assertEquals(mockUser, getField(response, "data"));
+        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
+        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
+        assertEquals("signup successful", ControllersTestUtils.getField(response, "message"));
+        assertEquals(mockUser, ControllersTestUtils.getField(response, "data"));
     }
 
     @Test
@@ -190,9 +183,9 @@ public class AuthenticationControllerTest {
         Response response = authenticationController.logout();
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, getField(response, "status"));
-        assertTrue((Boolean) getField(response, "success"));
-        assertEquals("logout successful", getField(response, "message"));
+        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
+        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
+        assertEquals("logout successful", ControllersTestUtils.getField(response, "message"));
     }
 
     @Test
@@ -216,9 +209,9 @@ public class AuthenticationControllerTest {
         Response response = authenticationController.validateUsername("newUser");
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, getField(response, "status"));
-        assertTrue((Boolean) getField(response, "success"));
-        assertEquals("username is available", getField(response, "message"));
+        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
+        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
+        assertEquals("username is available", ControllersTestUtils.getField(response, "message"));
     }
 
     @Test
@@ -254,9 +247,9 @@ public class AuthenticationControllerTest {
         Response response = authenticationController.validateEmail("email@example.com");
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, getField(response, "status"));
-        assertTrue((Boolean) getField(response, "success"));
-        assertEquals("email not registered", getField(response, "message"));
+        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
+        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
+        assertEquals("email not registered", ControllersTestUtils.getField(response, "message"));
     }
 
     @Test
