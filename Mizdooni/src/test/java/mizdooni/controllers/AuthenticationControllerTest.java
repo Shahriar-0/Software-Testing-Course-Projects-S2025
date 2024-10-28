@@ -9,7 +9,9 @@ import mizdooni.service.UserService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoRule;
@@ -52,6 +54,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test User")
     public void testUserLoggedIn() throws Exception {
         when(userService.getCurrentUser()).thenReturn(mockUser);
 
@@ -65,6 +68,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test User Not Logged In")
     public void testUserNotLoggedIn() {
         when(userService.getCurrentUser()).thenReturn(null);
 
@@ -74,6 +78,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Login Success")
     public void testLoginSuccess() throws Exception {
         when(userService.login("testUser", "testPass")).thenReturn(true);
         when(userService.getCurrentUser()).thenReturn(mockUser);
@@ -92,6 +97,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Login Invalid Credentials")
     public void testLoginInvalidCredentials() {
         when(userService.login("testUser", "wrongPass")).thenReturn(false);
 
@@ -105,6 +111,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Signup Success")
     public void testSignupSuccess() throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("username", "newUser");
@@ -129,6 +136,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Signup Invalid Params")
     public void testSignupInvalidParams() {
         Map<String, Object> params = new HashMap<>();
         params.put("username", "newUser");
@@ -139,6 +147,26 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Signup Invalid Params Type")
+    public void testSignupInvalidParamsType() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", "newUser");
+        params.put("password", 1234);
+        params.put("email", "email@example.com");
+        params.put("role", "client");
+
+        Map<String, String> address = new HashMap<>();
+        address.put("country", "Country");
+        address.put("city", "City");
+        params.put("address", address);
+
+        ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.signup(params));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(PARAMS_BAD_TYPE, exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test Logout Success")
     public void testLogoutSuccess() throws Exception {
         when(userService.logout()).thenReturn(true);
 
@@ -151,6 +179,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Logout No User")
     public void testLogoutNoUser() {
         doReturn(false).when(userService).logout();
 
@@ -160,8 +189,9 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Validate Username Success")
     public void testValidateUsernameAvailable() throws Exception {
-        when(ServiceUtils.validateUsername("newUser")).thenReturn(true);
+        doReturn(true).when(userService).usernameExists("newUser");
         when(userService.usernameExists("newUser")).thenReturn(false);
 
         Response response = authenticationController.validateUsername("newUser");
@@ -173,6 +203,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Validate Username Exists")
     public void testValidateUsernameExists() {
         when(ServiceUtils.validateUsername("existingUser")).thenReturn(true);
         when(userService.usernameExists("existingUser")).thenReturn(true);
@@ -183,6 +214,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Validate Email Success")
     public void testValidateEmailAvailable() throws Exception {
         when(ServiceUtils.validateEmail("email@example.com")).thenReturn(true);
         when(userService.emailExists("email@example.com")).thenReturn(false);
@@ -196,8 +228,9 @@ public class AuthenticationControllerTest {
     }
 
     @Test
+    @DisplayName("Test Validate Email Exists")
     public void testValidateEmailExists() {
-        when(ServiceUtils.validateEmail("registered@example.com")).thenReturn(true);
+        doReturn(true).when(userService).emailExists("registered@example.com");
         when(userService.emailExists("registered@example.com")).thenReturn(true);
 
         ResponseException exception = assertThrows(ResponseException.class, () -> authenticationController.validateEmail("registered@example.com"));
