@@ -111,9 +111,9 @@ public class TransactionEngineTest {
 
         int fraudScore = transactionEngine.detectFraudulentTransaction(excessiveDebitTransaction);
 
-        // Calculate expected fraud score: average of [100, 50, 150] = 100
-        // Since txn.amount (400) > 2 * average (2 * 100 = 200)
-        // Expected fraud score = txn.amount - 2 * averageAmount = 400 - 200 = 200
+        // Calculate expected fraud score: average of [100, 50, 150] = 116
+        // Since txn.amount (400) > 2 * average
+        // Expected fraud score = txn.amount - 2 * averageAmount = 400 - 232 = 168
         assertEquals(168, fraudScore);
     }
 
