@@ -118,6 +118,25 @@ public class TransactionEngineTest {
     }
 
     @Test
+    @DisplayName("Test detectFraudulentTransaction without excessive debit but isDebit")
+    void testDetectFraudulentTransaction_WithoutExcessiveDebitButIsDebit() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        transactionEngine.addTransactionAndDetectFraud(transaction2);
+        transaction3.setAccountId(1);
+        transactionEngine.addTransactionAndDetectFraud(transaction3);
+
+        Transaction excessiveDebitTransaction = new Transaction();
+        excessiveDebitTransaction.setTransactionId(5);
+        excessiveDebitTransaction.setAccountId(1);
+        excessiveDebitTransaction.setDebit(true);
+        excessiveDebitTransaction.setAmount(100); // Not Excessive amount
+
+        int fraudScore = transactionEngine.detectFraudulentTransaction(excessiveDebitTransaction);
+
+        assertEquals(0, fraudScore);
+    }
+
+    @Test
     @DisplayName("Test addTransactionAndDetectFraud duplicate transaction")
     void testAddTransactionAndDetectFraud_DuplicateTransaction() {
         transactionEngine.addTransactionAndDetectFraud(transaction1);
