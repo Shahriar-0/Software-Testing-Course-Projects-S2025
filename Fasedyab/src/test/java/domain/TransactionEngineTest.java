@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class TransactionEngineTest {
 
     TransactionEngine transactionEngine;
-    Transaction transaction1, transaction2, transaction3, transaction4;
+    Transaction transaction1, transaction2, transaction3, transaction4, transaction5;
 
     @BeforeEach
     void setup() {
@@ -38,6 +38,12 @@ public class TransactionEngineTest {
         transaction4.setAccountId(1);
         transaction4.setDebit(false);
         transaction4.setAmount(260);
+
+        transaction5 = new Transaction();
+        transaction5.setTransactionId(5);
+        transaction5.setAccountId(1);
+        transaction5.setDebit(true);
+        transaction5.setAmount(300);
     }
 
     @Test
@@ -78,6 +84,15 @@ public class TransactionEngineTest {
         transactionEngine.addTransactionAndDetectFraud(transaction2);
         transactionEngine.addTransactionAndDetectFraud(transaction4);
         assertEquals(0, transactionEngine.getTransactionPatternAboveThreshold(0));
+    }
+
+    @Test
+    @DisplayName("Test getTransactionPatternAboveThreshold with multiple for pattern")
+    void testGetTransactionPatternAboveThreshold_PatternMultiple() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        transactionEngine.addTransactionAndDetectFraud(transaction3);
+        transactionEngine.addTransactionAndDetectFraud(transaction5);
+        assertEquals(100, transactionEngine.getTransactionPatternAboveThreshold(50));
     }
 
     @Test
