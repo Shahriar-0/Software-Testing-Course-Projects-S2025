@@ -55,6 +55,7 @@ public class TransactionEngineTest {
         assertEquals(75, transactionEngine.getAverageTransactionAmountByAccount(1));
     }
 
+
     @Test
     @DisplayName("Test getTransactionPatternAboveThreshold empty")
     void testGetTransactionPatternAboveThreshold_Empty() {
@@ -62,12 +63,21 @@ public class TransactionEngineTest {
     }
 
     @Test
-    @DisplayName("Test getTransactionPatternAboveThreshold not empty")
-    void testGetTransactionPatternAboveThreshold() {
+    @DisplayName("Test getTransactionPatternAboveThreshold not empty with pattern")
+    void testGetTransactionPatternAboveThreshold_WithPattern() {
         transactionEngine.addTransactionAndDetectFraud(transaction1);
         transactionEngine.addTransactionAndDetectFraud(transaction2);
         transactionEngine.addTransactionAndDetectFraud(transaction3);
         assertEquals(100, transactionEngine.getTransactionPatternAboveThreshold(50));
+    }
+
+    @Test
+    @DisplayName("Test getTransactionPatternAboveThreshold not empty without pattern")
+    void testGetTransactionPatternAboveThreshold_WithoutPattern() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        transactionEngine.addTransactionAndDetectFraud(transaction2);
+        transactionEngine.addTransactionAndDetectFraud(transaction4);
+        assertEquals(0, transactionEngine.getTransactionPatternAboveThreshold(0));
     }
 
     @Test
