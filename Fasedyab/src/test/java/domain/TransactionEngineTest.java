@@ -42,7 +42,7 @@ public class TransactionEngineTest {
 
     @Test
     @DisplayName("Test getAverageTransactionAmountByAccount empty")
-    void testGetAverageTransactionAmountByAccountEmpty() {
+    void testGetAverageTransactionAmountByAccount_Empty() {
         assertEquals(0, transactionEngine.getAverageTransactionAmountByAccount(1));
     }
 
@@ -57,7 +57,7 @@ public class TransactionEngineTest {
 
     @Test
     @DisplayName("Test getTransactionPatternAboveThreshold empty")
-    void testGetTransactionPatternAboveThresholdEmpty() {
+    void testGetTransactionPatternAboveThreshold_Empty() {
         assertEquals(0, transactionEngine.getTransactionPatternAboveThreshold(100));
     }
 
@@ -72,7 +72,7 @@ public class TransactionEngineTest {
 
     @Test
     @DisplayName("Test detectFraudulentTransaction with excessive debit")
-    void testDetectFraudulentTransactionExcessiveDebit() {
+    void testDetectFraudulentTransaction_ExcessiveDebit() {
         transactionEngine.addTransactionAndDetectFraud(transaction1);
         transactionEngine.addTransactionAndDetectFraud(transaction2);
         transaction3.setAccountId(1);
@@ -94,7 +94,7 @@ public class TransactionEngineTest {
 
     @Test
     @DisplayName("Test addTransactionAndDetectFraud duplicate transaction")
-    void testAddTransactionAndDetectFraudDuplicateTransaction() {
+    void testAddTransactionAndDetectFraud_DuplicateTransaction() {
         transactionEngine.addTransactionAndDetectFraud(transaction1);
         assertEquals(0, transactionEngine.addTransactionAndDetectFraud(transaction1));
     }

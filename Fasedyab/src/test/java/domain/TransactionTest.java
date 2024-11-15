@@ -18,7 +18,7 @@ public class TransactionTest {
 
     @Test
     @DisplayName("Test equals same id")
-    void testEqualsSameId() {
+    void testEquals_SameId() {
         Transaction transaction2 = new Transaction();
         transaction2.setTransactionId(1);
 
@@ -27,7 +27,7 @@ public class TransactionTest {
 
     @Test
     @DisplayName("Test equals different id")
-    void testEqualsDifferentId() {
+    void testEquals_DifferentId() {
         Transaction transaction2 = new Transaction();
         transaction2.setTransactionId(2);
 
@@ -36,7 +36,7 @@ public class TransactionTest {
 
     @Test
     @DisplayName("Test different class")
-    void testEqualsDifferentClass() {
+    void testEquals_DifferentClass() {
         assertFalse(transaction.equals(new Object()));
     }
 }
