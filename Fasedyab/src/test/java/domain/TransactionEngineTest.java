@@ -91,4 +91,11 @@ public class TransactionEngineTest {
         // Expected fraud score = txn.amount - 2 * averageAmount = 400 - 200 = 200
         assertEquals(168, fraudScore);
     }
+
+    @Test
+    @DisplayName("Test addTransactionAndDetectFraud duplicate transaction")
+    void testAddTransactionAndDetectFraudDuplicateTransaction() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        assertEquals(0, transactionEngine.addTransactionAndDetectFraud(transaction1));
+    }
 }
