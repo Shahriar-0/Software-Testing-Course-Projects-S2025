@@ -37,5 +37,5 @@ jobs:
       - name: Build and run tests for Mizdooni
         run: mvn -B test -f Mizdooni/pom.xml
 
-      - name: Build and run tests for Fesadyab
-        run: mvn -B test -f Fesadyab/pom.xml
+      - name: Build and run tests for Fasedyab
+        run: mvn -B test -f Fasedyab/pom.xml
