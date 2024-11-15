@@ -69,4 +69,26 @@ public class TransactionEngineTest {
         transactionEngine.addTransactionAndDetectFraud(transaction3);
         assertEquals(100, transactionEngine.getTransactionPatternAboveThreshold(50));
     }
+
+    @Test
+    @DisplayName("Test detectFraudulentTransaction with excessive debit")
+    void testDetectFraudulentTransactionExcessiveDebit() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        transactionEngine.addTransactionAndDetectFraud(transaction2);
+        transaction3.setAccountId(1);
+        transactionEngine.addTransactionAndDetectFraud(transaction3);
+
+        Transaction excessiveDebitTransaction = new Transaction();
+        excessiveDebitTransaction.setTransactionId(5);
+        excessiveDebitTransaction.setAccountId(1);
+        excessiveDebitTransaction.setDebit(true);
+        excessiveDebitTransaction.setAmount(400); // Excessive amount
+
+        int fraudScore = transactionEngine.detectFraudulentTransaction(excessiveDebitTransaction);
+
+        // Calculate expected fraud score: average of [100, 50, 150] = 100
+        // Since txn.amount (400) > 2 * average (2 * 100 = 200)
+        // Expected fraud score = txn.amount - 2 * averageAmount = 400 - 200 = 200
+        assertEquals(168, fraudScore);
+    }
 }
