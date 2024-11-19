@@ -5,7 +5,6 @@ import static mizdooni.controllers.ControllerUtils.PARAMS_MISSING;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.lang.reflect.Field;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -97,6 +96,8 @@ public class ReviewControllerTest {
             "reviews for restaurant (1): Mock Restaurant",
             ControllersTestUtils.getField(response, "message")
         );
+        
+        @SuppressWarnings("unchecked")
         PagedList<Review> responseData = (PagedList<Review>) ControllersTestUtils.getField(
             response,
             "data"

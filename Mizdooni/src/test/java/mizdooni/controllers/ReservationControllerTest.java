@@ -63,7 +63,6 @@ public class ReservationControllerTest {
         0
     );
     private static final String VALID_DATETIME_STRING = "2024-10-25 19:00";
-    private static final LocalDate VALID_DATE_2 = LocalDate.of(2024, 10, 26);
     private static final LocalDateTime VALID_DATETIME_2 = LocalDateTime.of(
         2024,
         10,
@@ -71,7 +70,6 @@ public class ReservationControllerTest {
         19,
         0
     );
-    private static final String VALID_DATETIME_2_STRING = "2024-10-26 19:00";
 
     @Before
     public void setUp() {
