@@ -102,8 +102,7 @@ public class ReservationControllerTest {
                 "imageLink"
             );
         mockReservation = new Reservation(client, mockRestaurant, null, VALID_DATETIME);
-        mockReservation2 =
-            new Reservation(client, mockRestaurant, null, VALID_DATETIME_2);
+        mockReservation2 = new Reservation(client, mockRestaurant, null, VALID_DATETIME_2);
     }
 
     @Test
