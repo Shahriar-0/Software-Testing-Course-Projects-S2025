@@ -129,6 +129,37 @@ class RestaurantControllerApiTest {
     }
 
     @Test
+    @DisplayName("Test Get Restaurants Success Multiple Restaurants")
+    void testGetRestaurants_Success_MultipleRestaurants() throws Exception {
+        int page = 1;
+        Restaurant mockRestaurant2 = new Restaurant("Mock Restaurant 2", null, "Italian", LocalTime.of(9, 0), LocalTime.of(23, 0), "A great restaurant", new Address("Country", "City", "Street"), "imageLink");
+
+        List<Restaurant> restaurants = List.of(mockRestaurant, mockRestaurant2);
+        PagedList<Restaurant> pagedRestaurants = new PagedList<>(restaurants, 1, 2);
+
+        when(restaurantService.getRestaurants(eq(page), any()))
+            .thenReturn(pagedRestaurants);
+
+        mockMvc
+            .perform(get("/restaurants").param("page", "1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status").value(200))
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("restaurants listed"))
+            .andExpect(jsonPath("$.data.page").value(1))
+            .andExpect(jsonPath("$.data.pageList[0].name").value("Mock Restaurant"))
+            .andExpect(jsonPath("$.data.pageList[0].type").value("Italian"))
+            .andExpect(jsonPath("$.data.pageList[0].address.country").value("Country"))
+            .andExpect(jsonPath("$.data.pageList[0].address.city").value("City"))
+            .andExpect(jsonPath("$.data.pageList[0].address.street").value("Street"))
+            .andExpect(jsonPath("$.data.pageList[1].name").value("Mock Restaurant 2"))
+            .andExpect(jsonPath("$.data.pageList[1].type").value("Italian"))
+            .andExpect(jsonPath("$.data.pageList[1].address.country").value("Country"))
+            .andExpect(jsonPath("$.data.pageList[1].address.city").value("City"))
+            .andExpect(jsonPath("$.data.pageList[1].address.street").value("Street"));
+    }
+
+    @Test
     @DisplayName("Test Get Managers Restaurants Success")
     void testGetManagersRestaurants_Success() throws Exception {
         int managerId = 1;
