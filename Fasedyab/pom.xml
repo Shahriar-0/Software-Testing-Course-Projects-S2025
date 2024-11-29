@@ -47,7 +47,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <enabled>false</enabled>
+                            <enabled>false</enabled>  <!-- enable it to see the jacoco report-->
                         </configuration>
                     </execution>
                     <execution>
@@ -57,7 +57,7 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <enabled>false</enabled>
+                            <enabled>false</enabled>  <!-- enable it to see the jacoco report-->
                         </configuration>
                     </execution>
                 </executions>
