@@ -142,4 +142,38 @@ public class TransactionEngineTest {
         transactionEngine.addTransactionAndDetectFraud(transaction1);
         assertEquals(0, transactionEngine.addTransactionAndDetectFraud(transaction1));
     }
+
+    @Test
+    @DisplayName("Test addTransactionAndDetectFraud with fraudScore == 0")
+    void testAddTransactionAndDetectFraud_FraudScoreZero() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        transactionEngine.addTransactionAndDetectFraud(transaction2);
+
+        Transaction normalTransaction = new Transaction();
+        normalTransaction.setTransactionId(6);
+        normalTransaction.setAccountId(1);
+        normalTransaction.setDebit(false);
+        normalTransaction.setAmount(60);
+
+        // No fraud should be detected
+        int fraudScore = transactionEngine.addTransactionAndDetectFraud(normalTransaction);
+        assertEquals(0, fraudScore);
+    }
+
+    @Test
+    @DisplayName("Test addTransactionAndDetectFraud with fraudScore != 0")
+    void testAddTransactionAndDetectFraud_FraudScoreNonZero() {
+        transactionEngine.addTransactionAndDetectFraud(transaction1);
+        transactionEngine.addTransactionAndDetectFraud(transaction2);
+
+        Transaction excessiveDebitTransaction = new Transaction();
+        excessiveDebitTransaction.setTransactionId(7);
+        excessiveDebitTransaction.setAccountId(1);
+        excessiveDebitTransaction.setDebit(true);
+        excessiveDebitTransaction.setAmount(400); // Excessive amount
+
+        // Fraud detection should return non-zero fraud score
+        int fraudScore = transactionEngine.addTransactionAndDetectFraud(excessiveDebitTransaction);
+        assertTrue(fraudScore > 0);
+    }
 }
