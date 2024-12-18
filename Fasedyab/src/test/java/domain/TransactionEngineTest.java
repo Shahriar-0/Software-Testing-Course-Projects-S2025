@@ -155,7 +155,6 @@ public class TransactionEngineTest {
         normalTransaction.setDebit(false);
         normalTransaction.setAmount(60);
 
-        // No fraud should be detected
         int fraudScore = transactionEngine.addTransactionAndDetectFraud(normalTransaction);
         assertEquals(0, fraudScore);
     }
@@ -172,7 +171,6 @@ public class TransactionEngineTest {
         excessiveDebitTransaction.setDebit(true);
         excessiveDebitTransaction.setAmount(400); // Excessive amount
 
-        // Fraud detection should return non-zero fraud score
         int fraudScore = transactionEngine.addTransactionAndDetectFraud(excessiveDebitTransaction);
         assertTrue(fraudScore > 0);
     }
