@@ -9,6 +9,7 @@ import java.time.LocalTime;
 
 public class Steps {
     private User user;
+    private User user2;
     private User manager;
     private Reservation reservation;
     private Restaurant restaurant;
@@ -76,8 +77,25 @@ public class Steps {
         assertEquals(review_2, restaurant.getReviews().getFirst());
     }
 
-    @And("the review list of restaurant should be 1")
-    public void the_review_list_of_restaurant_should_be_1(){
-        assertEquals(1, restaurant.getReviews().size());
+    @Then("the review list of restaurant should be {int}")
+    public void the_review_list_of_restaurant_should_be(int num){
+        assertEquals(num, restaurant.getReviews().size());
+    }
+
+    @Then("the review is in the restaurant review list")
+    public void the_review_is_in_the_restaurant_review_list(){
+        assertEquals(review_1, restaurant.getReviews().getFirst());
+    }
+
+    @Given("another user exists as well")
+    public void another_user_exists_as_well(){
+        user2 = new User("alireza", "1234", "alireza@gmail.com",
+                new Address("Iran", "Tehran", "Marzdarana"), User.Role.client);
+    }
+
+    @And("user2 adds a review")
+    public void user2_adds_a_review(){
+        restaurant.addReview(new Review(user2, new Rating(2,2,2,2), "bad",
+                LocalDateTime.now()));
     }
 }
