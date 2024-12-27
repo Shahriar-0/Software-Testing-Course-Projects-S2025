@@ -98,4 +98,14 @@ public class Steps {
         restaurant.addReview(new Review(user2, new Rating(2,2,2,2), "bad",
                 LocalDateTime.now()));
     }
+
+    @Then("the average rating is computed correctly as food {double}, service {double}, ambience {double} and overall {double}")
+    public void the_average_rating_is_computed_correctly(double food, double service, double ambience, double overall){
+        Rating ratings = restaurant.getAverageRating();
+        double delta = 0.01;
+        assertEquals(food, ratings.food, delta);
+        assertEquals(service, ratings.service, delta);
+        assertEquals(ambience, ratings.overall, delta);
+        assertEquals(overall, ratings.ambiance, delta);
+    }
 }
