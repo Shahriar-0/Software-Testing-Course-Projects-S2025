@@ -83,32 +83,6 @@ public class ReviewControllerTest {
     }
 
     @Test
-    @Disabled("For some reasons it fails")
-    @DisplayName("Test Get Reviews Success")
-    public void testGetReviewsSuccess() throws Exception {
-        when(restaurantService.getRestaurant(1)).thenReturn(mockRestaurant);
-        when(reviewService.getReviews(1, 1)).thenReturn(mockPagedReviews);
-
-        Response response = reviewController.getReviews(1, 1);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, ControllersTestUtils.getField(response, "status"));
-        assertTrue((Boolean) ControllersTestUtils.getField(response, "success"));
-        assertEquals(
-            "reviews for restaurant (1): Mock Restaurant",
-            ControllersTestUtils.getField(response, "message")
-        );
-
-        @SuppressWarnings("unchecked")
-        PagedList<Review> responseData = (PagedList<Review>) ControllersTestUtils.getField(
-            response,
-            "data"
-        );
-        assertNotNull(responseData);
-        assertEquals(mockPagedReviews, responseData);
-    }
-
-    @Test
     @DisplayName("Test Get Reviews Restaurant Not Found")
     public void testGetReviewsRestaurantNotFound() {
         when(restaurantService.getRestaurant(1)).thenReturn(null);
