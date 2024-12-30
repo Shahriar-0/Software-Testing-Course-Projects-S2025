@@ -22,6 +22,7 @@ import mizdooni.service.RestaurantService;
 import mizdooni.service.ReviewService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
